@@ -29,30 +29,32 @@
 - Your components support injection of dependencies and it’s unit tested (not necessarily with TDD)
 
 # Solution
-The Weather Forecast APP was implemented using React, Typescript, .NET 6 (Core) with C# and Bootstrap Styles. 
-The Weather API used was Accuweather's, available at https://developer.accuweather.com/.
+- The Weather Forecast APP was implemented using React, Typescript, .NET 6 (Core) with C# and Bootstrap Styles. 
+- The Weather API used was Accuweather's, available at https://developer.accuweather.com/.
 
 
 ![Desktop](/Desktop.png)
 ![Mobile](/mobile.png)
 
 ## Functional Requirements
-The app shows browser current location, if the user accept geolocation from the browser and if the information is available. If there is an exception getting the browser's geolocation, the App uses the Interamerican Development Bank's Headquarter's location, in Washington, DC.
-The app shows day of week, location, temperature, corresponding description of weather and icon.
-It also displays current humidity, wind and precipitation percentage when available.
-The user can decide to use Celsius or Fahrenheit (and mi/h or km/h for wind speeds) and the app saves the information in a cookie for future use.
+- The app shows browser current location, if the user accept geolocation from the browser and if the information is available. If there is an exception getting the browser's geolocation, the App uses the Interamerican Development Bank's Headquarter's location, in Washington, DC.
+- The app shows day of week, location, temperature, corresponding description of weather and icon.
+- It also displays current humidity, wind and precipitation percentage when available.
+- The user can decide to use Celsius or Fahrenheit (and mi/h or km/h for wind speeds) and the app saves the information in a cookie for future use.
 
 ## Non Functional Requirements
-The app supports Chrome and Microsoft Edge.
-It is responsive, from small screens to desktops, using bootstrap's default CSS classes.
-No plugins are necessary to run the app.
-A loading screen is shown while the data is being loaded.
-Errors of geolocation are treated by using the IDB headquarter's location.
-Errors refering to current weather conditions are displayed in a user friendly manner.
-Typescript, C#, React, .NET 6 (Core) and Bootstrap were used.
-Code is clear, commented out, maintainable, well tabbed and it follows standard naming convetions (Cammel Case).
-The project is Object Oriented.
+- The app supports Chrome and Microsoft Edge.
+- It is responsive, from small screens to desktops, using bootstrap's default CSS classes.
+- No plugins are necessary to run the app.
+- A loading screen is shown while the data is being loaded.
+- Errors of geolocation are treated by using the IDB headquarter's location.
+- Errors regarding the current weather conditions are displayed in a user friendly manner.
+- Typescript, C#, React, .NET 6 (Core) and Bootstrap were used.
+- Code is clear, commented, maintainable, well tabbed and it follows standard naming convetions.
+- The project is Object Oriented.
 
+## Live Demo
+ - There is a running demo in https://idbweatherforecast.azurewebsites.net/
 
 
 
