@@ -8,26 +8,26 @@ namespace IDBWeatherForecastBackend.Controllers
     [Route("api/weather")]
     public class WeatherForecastController : ControllerBase
     {
-       
+
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherForecastServices _weatherForecastServices;
         public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherForecastServices weatherForecastService)
         {
             _logger = logger;
-            _weatherForecastServices = weatherForecastService; 
+            _weatherForecastServices = weatherForecastService;
 
         }
-        [ResponseCache(Duration = 300)]
-        [Route("location"),HttpGet]
+        [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "latitude", "longitude" })]
+        [Route("location"), HttpGet]
         public ActionResult<Location> GetWeatherLocation(string latitude, string longitude)
         {
-            var location =_weatherForecastServices.GetLocation(latitude, longitude);
+            var location = _weatherForecastServices.GetLocation(latitude, longitude);
             if (location == null)
                 return NotFound();
             return Ok(location);
 
         }
-        [ResponseCache(Duration = 300)]
+        [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "locationKey" })]
         [Route("{locationkey}"), HttpGet]
         public ActionResult<WeatherCondition> GetCurrentWeather(string locationKey)
         {
@@ -37,7 +37,7 @@ namespace IDBWeatherForecastBackend.Controllers
             return Ok(currentWeather);
 
         }
-        [ResponseCache(Duration = 300)]
+        [ResponseCache(Duration = 300, VaryByQueryKeys = new string[]{ "locationKey", "isMetric" })]
         [Route("forecast/{locationkey}"), HttpGet]
         public ActionResult<IEnumerable<WeatherForecast>> GetWeatherForecast(string locationKey, bool isMetric=true)
         {
