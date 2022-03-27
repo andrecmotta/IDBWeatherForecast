@@ -3,7 +3,7 @@ import LocationModel from './LocationModel';
 import WeatherConditionModel from './WeatherConditionModel';
 import './WeatherForecast.css'
 import * as moment from 'moment';
-import Cookies from 'universal-cookie';
+import Cookies, { CookieSetOptions } from 'universal-cookie';
 import WeatherForecastModel from './WeatherForecastModel';
 
 
@@ -131,7 +131,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                       `}</h3>)
     }
     public setCurrentUnit(unit: string) {
-        this.cookies.set("currentUnit", unit);
+        this.cookies.set("currentUnit", unit, { expires: moment.default().add("days", 10).toDate()});
         if (this.state.location)
             this.setFiveDayForecast(this.state.location.key.toString(), unit);
         this.setState({ currentUnit: unit });
