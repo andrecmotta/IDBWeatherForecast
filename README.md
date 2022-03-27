@@ -33,7 +33,7 @@ The Weather Forecast APP was implemented using React, Typescript, .NET 6 (Core) 
 The Weather API used was Accuweather's, available at https://developer.accuweather.com/.
 
 
-![Desktop](/desktop.png)
+![Desktop](/Desktop.png)
 ![Mobile](/mobile.png)
 
 ## Functional Requirements
