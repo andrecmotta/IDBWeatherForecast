@@ -50,7 +50,7 @@
 - Errors of geolocation are treated by using the IDB headquarter's location.
 - Errors regarding the current weather conditions are displayed in a user friendly manner.
 - Typescript, C#, React, .NET 6 (Core) and Bootstrap were used.
-- Code is clear, commented, maintainable, well tabbed and it follows standard naming convetions.
+- Code is clear, commented, maintainable, unit tested, well tabbed and it follows standard naming convetions.
 - The project is Object Oriented.
 
 ## Live Demo
