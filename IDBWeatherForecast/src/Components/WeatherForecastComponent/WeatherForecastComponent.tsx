@@ -30,16 +30,17 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
         var currentUnit = this.cookies.get("currentUnit");
         if (!currentUnit)
             currentUnit = "metric";
-        this.state = { currentUnit: currentUnit, fiveDayForecast: [], isLoading: true,isOnError:false };
+        this.state = { currentUnit: currentUnit, fiveDayForecast: [], isLoading: true, isOnError: false };
     }
     public componentDidMount() {
         navigator.geolocation.getCurrentPosition((arg) => {
             this.getCurrentLocation(arg.coords.latitude, arg.coords.longitude);
         }, (arg) => {
-            //We could not get the coordinates from the browser, using the IDB Headquarters as default location;
+            //The app could not get the coordinates from the browser, using the IDB Headquarters as default location;
             this.getCurrentLocation(38.899406, -77.030186);
         });
     }
+
     //Get the current location from the coordinates
     public getCurrentLocation(latitude: number, longitude: number) {
 
@@ -54,8 +55,9 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                 }
             });
             this.getCurrentWeather(loc.key);
-        }).catch(reason => { this.setState({ isLoading: false, isOnError:true }) });
+        }).catch(reason => { this.setState({ isLoading: false, isOnError: true }) });
     }
+
     //Get the current weather with the location key
     public getCurrentWeather(locationKey: string) {
         fetch(`/api/weather/${locationKey}`).then((response) => {
@@ -80,6 +82,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
             }
         });
     }
+
     public setFiveDayForecast(locationKey: string, unit: string) {
         var isMetric = unit == "metric";
         //The forecast API needs one call for metric and one call for imperial;
@@ -90,6 +93,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
         }
         this.setState({ fiveDayForecast: isMetric ? this.fiveDayForecastMetric : this.fiveDayForecastImperial });
     }
+
     public getFiveDayForecast(locationKey: string, isMetric: boolean) {
         this.setState({ isLoading: true });
         fetch(`/api/weather/forecast/${locationKey}?isMetric=${isMetric}`).then((response) => {
@@ -98,11 +102,13 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                 response.json().then(forecast => {
                     var now = moment.default();
                     // If it is after 5pm use the night icon for the forecast of the the current day.
-                    var useNight = now.hours() >= 17; 
+                    var useNight = now.hours() >= 17;
                     var dailyForecasts: Array<WeatherForecastModel> = forecast.map((dailyWeather: any, index: number) => {
                         return {
                             epochTime: dailyWeather.epochDate,
-                            preciptationProbability: useNight && index == 1 ? dailyWeather.night.precipitationProbability : dailyWeather.day.precipitationProbability,
+                            //The precipitation is always a forecast, there is no precipitaion on the CurrentWeather API, getting the first one.
+                            preciptationProbability: useNight && index == 0 ? dailyWeather.night.precipitationProbability : dailyWeather.day.precipitationProbability,
+                            //Only shows the Night icon for the current day, the following should display the regular day icon.
                             weatherIcon: useNight && index == 0 ? dailyWeather.night.icon : dailyWeather.day.icon,
                             maxTemperature: dailyWeather.temperature.maximum.value,
                             minTemperature: dailyWeather.temperature.minimum.value,
@@ -114,28 +120,31 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                     else
                         this.fiveDayForecastImperial = dailyForecasts;
 
-                    this.setState({ fiveDayForecast: dailyForecasts, isLoading:false });
-                }).catch(reason => { this.setState({ isLoading: false, isOnError: true })});
+                    this.setState({ fiveDayForecast: dailyForecasts, isLoading: false });
+                }).catch(reason => { this.setState({ isLoading: false, isOnError: true }) });
             }
         });
     }
-
-
+    //Render the City, County and State
     public renderLocation(): React.ReactElement {
         if (!this.state.location)
             return <></>;
-
+        //Sometimes the city information is a Neighborhood, in this case, show the city in Parent City.
         return (<h3>{`${this.state.location.city}${this.state.location.parentCity != null && this.state.location.city != this.state.location.parentCity ? `, ${this.state.location.parentCity}` : ''},
                       ${this.state.location.state},
                       ${this.state.location.country}
                       `}</h3>)
     }
+
+    //Set the Unit Change and save it to a cookie with 10 day expiration.
     public setCurrentUnit(unit: string) {
-        this.cookies.set("currentUnit", unit, { expires: moment.default().add("days", 10).toDate()});
+        this.cookies.set("currentUnit", unit, { expires: moment.default().add("days", 10).toDate() });
         if (this.state.location)
             this.setFiveDayForecast(this.state.location.key.toString(), unit);
         this.setState({ currentUnit: unit });
     }
+
+    //Render the current weather
     public renderCurrentWeather(): React.ReactElement {
         if (!this.state.weatherCondition) {
             return (<></>)
@@ -184,6 +193,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
 
         );
     }
+    //Render the 5 days weather forecast.
     public renderForecast(): React.ReactElement {
         var element = this.state.fiveDayForecast.map((forecast, index) => (
             <div className="col-md col-sm-12 text-center daily-forecast" key={`forecast_${index}`}>
@@ -195,15 +205,18 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
     }
     public render() {
         var element: React.ReactElement;
+        //If it is not loading or has an error status, render.
         if (!this.state.isLoading && !this.state.isOnError)
             element = (<>{this.renderLocation()}
                 {this.renderCurrentWeather()}
                 {this.renderForecast()}
             </>);
         else
+            //If it is loading, render the loading image
             if (this.state.isLoading)
-                element = <div className="text-center"><img src="images/cloud_load.gif" className="loading-image" role="loading"/></div>
+                element = <div className="text-center"><img src="images/cloud_load.gif" className="loading-image" role="loading" /></div>
             else
+                //Show the error message if on an error state
                 element = <div className="text-center alert-danger alert" role="error">Error loading the weather information. Please, reload the page.</div>
         return (
             <div className="weather-component row">

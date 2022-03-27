@@ -18,7 +18,6 @@
         public bool IsDayTime { get; set; }
 
     }
-
     public class Measure
     {
         public decimal? Value { get; set; }
@@ -29,7 +28,6 @@
         public Direction? Direction { get; set; }
         public UnitSystems? Speed { get; set; }
     }
-
     //Imperial and Metric Unit Systems
     public class UnitSystems
     {

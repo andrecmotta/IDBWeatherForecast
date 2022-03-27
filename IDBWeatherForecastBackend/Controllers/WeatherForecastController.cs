@@ -17,6 +17,12 @@ namespace IDBWeatherForecastBackend.Controllers
             _weatherForecastServices = weatherForecastService;
 
         }
+        /// <summary>
+        /// Gets the location from the latitude and longitude.
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <returns>Location</returns>
         [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "latitude", "longitude" })]
         [Route("location"), HttpGet]
         public ActionResult<Location> GetWeatherLocation(string latitude, string longitude)
@@ -27,6 +33,11 @@ namespace IDBWeatherForecastBackend.Controllers
             return Ok(location);
 
         }
+        /// <summary>
+        /// Get the current weather for that location
+        /// </summary>
+        /// <param name="locationKey">This key is provided by the GetWeatherLocation method</param>
+        /// <returns>WeatherCondition</returns>
         [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "locationKey" })]
         [Route("{locationkey}"), HttpGet]
         public ActionResult<WeatherCondition> GetCurrentWeather(string locationKey)
@@ -37,18 +48,21 @@ namespace IDBWeatherForecastBackend.Controllers
             return Ok(currentWeather);
 
         }
-        [ResponseCache(Duration = 300, VaryByQueryKeys = new string[]{ "locationKey", "isMetric" })]
+        /// <summary>
+        /// Get the 5 days weather forecast. 
+        /// </summary>
+        /// <param name="locationKey">This key is provided by the GetWeatherLocation method</param>
+        /// <param name="isMetric">This method returns only one system, set this parameter to false to return Imperial system.</param>
+        /// <returns>List of WeatherForecast</returns>
+        [ResponseCache(Duration = 300, VaryByQueryKeys = new string[] { "locationKey", "isMetric" })]
         [Route("forecast/{locationkey}"), HttpGet]
-        public ActionResult<IEnumerable<WeatherForecast>> GetWeatherForecast(string locationKey, bool isMetric=true)
+        public ActionResult<IEnumerable<WeatherForecast>> GetWeatherForecast(string locationKey, bool isMetric = true)
         {
-            var weatherForecast = _weatherForecastServices.GetWeatherForecast(locationKey,isMetric);
+            var weatherForecast = _weatherForecastServices.GetWeatherForecast(locationKey, isMetric);
             if (!weatherForecast.Any())
                 return NotFound();
             return Ok(weatherForecast);
 
         }
-
-
-
     }
 }

@@ -7,8 +7,6 @@
         public Information? Day { get; set; }
         public Information? Night { get; set; }
         public MinimuMaximum? Temperature { get; set; }
-
-
     }
     public class MinimuMaximum
     {
@@ -25,13 +23,11 @@
         public string IconPhrase { get; set; } = string.Empty;
         //Rounded speed value of the Wind and Type of unit of the wind.
         public ForecastWind? Wind { get; set; }
-
     }
 
     public class ForecastWind
     {
         public Speed? Speed;
-
     }
     public class Speed
     {

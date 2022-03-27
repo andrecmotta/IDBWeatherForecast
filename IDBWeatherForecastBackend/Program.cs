@@ -31,14 +31,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseResponseCaching();
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+
+//Using this to run the SPA application and the backend on the same app.
 var options = new FileServerOptions()
 {
     FileProvider = new PhysicalFileProvider(
@@ -46,8 +44,8 @@ var options = new FileServerOptions()
     RequestPath = "",
 
 };
+
 options.DefaultFilesOptions.DefaultFileNames.Add("index.html");
 app.UseFileServer(options);
-
 
 app.Run();

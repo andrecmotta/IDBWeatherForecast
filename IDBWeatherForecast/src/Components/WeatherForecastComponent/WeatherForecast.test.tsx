@@ -7,7 +7,7 @@ var newWeatherForecast = () => {
 }
 test('Adding Location', () => {
     var wfc: WeatherForecast = newWeatherForecast();
-    wfc.state = { currentUnit: "metric", fiveDayForecast: [], location: { city: "Arlington", country: "United States", state: "Virginia", key: 12345, parentCity: undefined }, weatherCondition: undefined, isLoading: false, isOnError:false };
+    wfc.state = { currentUnit: "metric", fiveDayForecast: [], location: { city: "Arlington", country: "United States", state: "Virginia", key: 12345, parentCity: undefined }, weatherCondition: undefined, isLoading: false, isOnError: false };
     var element = wfc.renderLocation();
     render(element);
     const linkElement = screen.getByText(/Arlington, Virginia/i);
@@ -21,7 +21,7 @@ test('Loading', () => {
     const linkElement = screen.getByRole("loading");
     expect(linkElement).toBeInTheDocument();
     screen.debug();
-}) 
+})
 test('Error', () => {
     var wfc: WeatherForecast = newWeatherForecast();
     wfc.state = { currentUnit: "metric", fiveDayForecast: [], location: { city: "Arlington", country: "United States", state: "Virginia", key: 12345, parentCity: undefined }, weatherCondition: undefined, isLoading: false, isOnError: true };
@@ -29,7 +29,7 @@ test('Error', () => {
     const linkElement = screen.getByRole("error");
     expect(linkElement).toBeInTheDocument();
     screen.debug();
-}) 
+})
 test('Metric', () => {
     var wfc: WeatherForecast = newWeatherForecast();
     wfc.state = {
@@ -51,4 +51,4 @@ test('Imperial', () => {
     const linkElement = screen.getByText("50");
     expect(linkElement).toBeInTheDocument();
     screen.debug();
-}) 
+})
