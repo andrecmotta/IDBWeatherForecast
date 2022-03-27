@@ -1,0 +1,29 @@
+h3{
+    color:gray;
+}
+.weather-component {
+    max-width: 800px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    color: gray;
+    padding-left: .5em;
+    padding-top: .5em;
+    margin-left: .1em;
+    margin-right: .1em;
+}
+.weather-info{
+    font-size:0.9rem!important;
+}
+.link-primary{
+    text-decoration:none;
+}
+.daily-forecast {
+    border: 1px solid lightgray;
+    margin-left: 0.5em;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    border-radius: 2px;
+}
+.loading-image{
+    width:50%;
+}
