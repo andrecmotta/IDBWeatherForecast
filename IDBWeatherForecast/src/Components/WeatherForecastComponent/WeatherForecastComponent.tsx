@@ -17,6 +17,7 @@ interface WeatherForecastState {
     currentUnit: string;
     fiveDayForecast: Array<WeatherForecastModel>;
     isLoading: boolean;
+    isOnError: boolean;
 }
 
 class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForecastState> {
@@ -29,7 +30,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
         var currentUnit = this.cookies.get("currentUnit");
         if (!currentUnit)
             currentUnit = "metric";
-        this.state = { currentUnit: currentUnit, fiveDayForecast: [], isLoading: true };
+        this.state = { currentUnit: currentUnit, fiveDayForecast: [], isLoading: true,isOnError:false };
     }
     public componentDidMount() {
         navigator.geolocation.getCurrentPosition((arg) => {
@@ -53,7 +54,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                 }
             });
             this.getCurrentWeather(loc.key);
-        });
+        }).catch(reason => { this.setState({ isLoading: false, isOnError:true }) });
     }
     //Get the current weather with the location key
     public getCurrentWeather(locationKey: string) {
@@ -75,7 +76,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                         }
                     });
                     this.setFiveDayForecast(locationKey, this.state.currentUnit);
-                });
+                }).catch(reason => { this.setState({ isLoading: false, isOnError: true }) });;
             }
         });
     }
@@ -114,7 +115,7 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
                         this.fiveDayForecastImperial = dailyForecasts;
 
                     this.setState({ fiveDayForecast: dailyForecasts, isLoading:false });
-                });
+                }).catch(reason => { this.setState({ isLoading: false, isOnError: true })});
             }
         });
     }
@@ -194,13 +195,16 @@ class WeatherForecast extends React.Component<WeatherForecastProps, WeatherForec
     }
     public render() {
         var element: React.ReactElement;
-        if (!this.state.isLoading)
+        if (!this.state.isLoading && !this.state.isOnError)
             element = (<>{this.renderLocation()}
                 {this.renderCurrentWeather()}
                 {this.renderForecast()}
             </>);
         else
-            element = <div className="text-center"><img src="images/cloud_load.gif" className="loading-image" /></div>
+            if (this.state.isLoading)
+                element = <div className="text-center"><img src="images/cloud_load.gif" className="loading-image" role="loading"/></div>
+            else
+                element = <div className="text-center alert-danger alert" role="error">Error loading the weather information. Please, reload the page.</div>
         return (
             <div className="weather-component row">
                 {element}
