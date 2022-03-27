@@ -1,6 +1,5 @@
 .vs/
-.vscode
 bin/
 obj/
-properties/
+publishProfiles/
 .config/
