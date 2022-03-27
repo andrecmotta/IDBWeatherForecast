@@ -29,7 +29,7 @@
 - Your components support injection of dependencies and it’s unit tested (not necessarily with TDD)
 
 # Solution
-- The Weather Forecast APP was implemented using React, Typescript, .NET 6 (Core) with C# and Bootstrap Styles. 
+- The Weather Forecast APP was implemented using React, Typescript, .NET 6 (Core) with C# and Bootstrap styles on Visual Studio 2022. 
 - The Weather API used was Accuweather's, available at https://developer.accuweather.com/.
 
 
